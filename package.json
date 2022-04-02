@@ -1,0 +1,22 @@
+{
+  "name": "sv145",
+  "version": "1.0.0",
+  "description": "SV145 is a Discord bot. LOL",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "semistandard --fix && node bot/index.js"
+  },
+  "keywords": [],
+  "author": "Sophie Snow",
+  "license": "GPLV3",
+  "dependencies": {
+    "@discordjs/rest": "^0.3.0",
+    "discord-api-types": "^0.30.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "semistandard": "^16.0.1"
+  }
+}
