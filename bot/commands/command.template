@@ -1,0 +1,21 @@
+import { createEmbed } from '../helpers.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+
+export const command = {
+  data: new SlashCommandBuilder()
+    .setName('command')
+    .setDescription('Do something!'),
+
+  async execute (interaction) {
+    interaction.reply({
+      embeds: [
+        createEmbed({
+          title: 'Hi!',
+          description: 'You did something!',
+          author: interaction.user
+        })
+      ]
+    });
+    console.log(`${interaction.user.username} did something!`);
+  }
+};

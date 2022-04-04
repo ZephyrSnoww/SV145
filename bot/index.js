@@ -1,3 +1,5 @@
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
 import { Client, Intents, Collection, Permissions } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -23,37 +25,42 @@ client.commands = new Collection();
 // Iterate through command filenames
 // Require them, add them to the collection
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.data.name, command);
-  commands.push(command.data.toJSON());
+  import(`./commands/${file}`).then((commandModule) => {
+    const command = commandModule.command;
+    client.commands.set(command.data.name, command);
+    commands.push(command.data.toJSON());
+  });
 }
 
 // When the client is first ready
 client.once('ready', () => {
   // Say so
   console.log('Ready!');
-  // const CLIENT_ID = client.user.id;
-  // const rest = new REST({ version: '9' }).setToken(TOKEN);
+  const clientID = client.user.id;
+  const rest = new REST({ version: '9' }).setToken(TOKEN);
 
-  // const guildIDs = [];
+  const guildIDs = [];
 
-  for (const guild of client.guilds) {
-    console.log(guild);
+  for (const guild of client.guilds.cache) {
+    guildIDs.push(guild[0]);
   }
 
   // Register commands
-  // (async () => {
-  //   try {
-  //     await rest.put(
-  //       Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-  //         body: commands
-  //       }
-  //     );
-  //     console.log('Successfully registered application commands!');
-  //   } catch (error) {
-  //     if (error) console.error(error);
-  //   }
-  // })();
+  (async () => {
+    try {
+      for (const ID of guildIDs) {
+        await rest.put(
+          Routes.applicationGuildCommands(clientID, ID), {
+            body: commands
+          }
+        );
+        console.log(`Registered commands to ${ID}`);
+      }
+      console.log('Successfully registered application commands!');
+    } catch (error) {
+      if (error) console.error(error);
+    }
+  })();
 });
 
 // When the client recieves an interaction
