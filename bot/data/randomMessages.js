@@ -3,5 +3,9 @@ export const pingResponses = [
 ];
 
 export const errorTitles = [
-  'Whoops!'
+  'Whoops!',
+  'Uh oh!',
+  'That didn\'t work!',
+  'Oh no!',
+  'Oops!'
 ];
