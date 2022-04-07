@@ -1,6 +1,22 @@
 import { MessageEmbed } from 'discord.js';
 
-export function randomChoice (array) {
+export function randomChoice (array, weights = undefined) {
+  if (weights) {
+    if (array.length !== weights.length) {
+      throw new RangeError('Array and weights must be the same length!');
+    }
+
+    const tempArray = [];
+
+    for (let i = 0; i < array.length; i++) {
+      for (let o = 0; o < weights[i]; o++) {
+        tempArray.push(array[i]);
+      }
+    }
+
+    array = tempArray;
+  }
+
   return array[Math.floor(Math.random() * array.length)];
 }
 
