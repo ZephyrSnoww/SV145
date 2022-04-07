@@ -1,6 +1,7 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { Client, Intents, Collection, Permissions } from 'discord.js';
+import haiku from 'haiku-detect';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -108,6 +109,26 @@ client.on('interactionCreate', async (interaction) => {
 
 //   fs.writeFileSync('./data/tickets.json', JSON.stringify(tickets, null, 4));
 // });
+
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+
+  const splitMessage = message.content.replace(/\*/, '\\*').split('\n');
+
+  if (haiku.detect(message.content)) {
+    const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*'));
+
+    message.reply(`*${formattedHaiku.join('\n')}*`);
+  } else {
+    for (const line of splitMessage) {
+      if (haiku.detect(line)) {
+        const formattedHaiku = haiku.format(line);
+
+        message.reply(`*${formattedHaiku.join('\n')}*`);
+      }
+    }
+  }
+});
 
 // When someone joins the server
 client.on('guildMemberAdd', async (member) => {
