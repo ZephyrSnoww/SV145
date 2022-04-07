@@ -9,3 +9,10 @@ export const errorTitles = [
   'Oh no!',
   'Oops!'
 ];
+
+export const successTitles = [
+  'Alright!',
+  'Okay!',
+  'Here you go!',
+  'Success!'
+];
