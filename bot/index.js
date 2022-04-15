@@ -1,6 +1,7 @@
-import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
 import { Client, Intents, Collection, Permissions } from 'discord.js';
+import { Routes } from 'discord-api-types/v9';
+import { REST } from '@discordjs/rest';
+import { polarity } from 'polarity';
 import haiku from 'haiku-detect';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -90,33 +91,14 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-// client.on('messageCreate', async (message) => {
-//   const tickets = JSON.parse(fs.readFileSync('./data/tickets.json'));
-
-//   for (let i = 0; i < tickets.length; i++) {
-//     if (message.channel.id === tickets[i].channel) {
-//       tickets[i].log.push(`${message.author.username}: ${message.content}`);
-//       if (message.content === 'finish ticket') {
-//         tickets[i].active = false;
-
-//         message.guild.channels.fetch(tickets[i].channel).then(async (channel) => {
-//           await channel.delete(`Ticket completed by ${message.author.username}`);
-//           tickets[i].channel = null;
-//         });
-//       }
-//     }
-//   }
-
-//   fs.writeFileSync('./data/tickets.json', JSON.stringify(tickets, null, 4));
-// });
-
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
+  if (message.content === '') return;
 
-  const splitMessage = message.content.replace(/\*/, '\\*').split('\n');
+  let splitMessage = message.content.replace(/\*/, '\\*').split('\n');
 
   if (haiku.detect(message.content)) {
-    const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*'));
+    const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*').replace(/\n/, ''));
 
     message.reply(`*${formattedHaiku.join('\n')}*`);
   } else {
@@ -127,6 +109,17 @@ client.on('messageCreate', async (message) => {
         message.reply(`*${formattedHaiku.join('\n')}*`);
       }
     }
+  }
+
+  splitMessage = message.content.split(/\s/);
+  const messagePolarity = polarity(splitMessage);
+
+  if (messagePolarity.polarity < -10) {
+    message.reply('Wow! That message was really negative! Congrats.');
+  } else if (messagePolarity.polarity > 10) {
+    message.reply('Wow! That message was really positive! Congrats.');
+  } else if (messagePolarity.polarity === 0 && (messagePolarity.positivity + messagePolarity.negativity) > 20) {
+    message.reply('Wow! That message was very positive *and* negative! Make up your mind, cmon now.');
   }
 });
 
