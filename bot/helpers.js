@@ -38,7 +38,7 @@ export function createEmbed ({
 
   const embed = new MessageEmbed()
     .setTitle(title)
-    .setDescription(description)
+    .setDescription(description.replace(/(\n([ ]{2,}))/gm, '\n'))
     .setColor(color)
     .setURL(url)
     .setThumbnail(thumbnail)

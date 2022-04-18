@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import { noThanksMessages, thanksMessages } from './data/randomMessages.js';
 import { randomChoice } from './helpers.js';
+import { reactionImageCategories } from './data/reactionImageData.js';
 
 // Register .env file
 dotenv.config();
@@ -65,6 +66,19 @@ client.once('ready', () => {
       if (error) console.error(error);
     }
   })();
+
+  // Ensure all reaction image categories exist
+  for (const [category, subcategories] of Object.entries(reactionImageCategories)) {
+    if (!fs.existsSync(`./bot/data/reactionImages/${category}`)) {
+      fs.mkdirSync(`./bot/data/reactionImages/${category}`);
+    }
+
+    for (const subcategory of subcategories) {
+      if (!fs.existsSync(`./bot/data/reactionImages/${category}/${subcategory}`)) {
+        fs.mkdirSync(`./bot/data/reactionImages/${category}/${subcategory}`);
+      }
+    }
+  }
 });
 
 // ========== Command interaction handling ==========
@@ -107,12 +121,12 @@ client.on('messageCreate', async (message) => {
     return message.reply(randomChoice(noThanksMessages.responses));
   }
 
-  let splitMessage = message.content.replace(/\*/, '\\*').split('\n');
+  let splitMessage = message.content.replace(/\*/g, '\\*').split('\n');
 
   // ===== Detecting haikus =====
   try {
     if (haiku.detect(message.content)) {
-      const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*').replace(/\n/, ''));
+      const formattedHaiku = haiku.format(message.content.replace(/\*/g, '\\*').replace(/\n/g, ''));
 
       message.reply(`*${formattedHaiku.join('\n')}*`);
     } else {
@@ -129,7 +143,7 @@ client.on('messageCreate', async (message) => {
   }
 
   // ===== Random stuff =====
-  splitMessage = message.content.split(/\s/);
+  splitMessage = message.content.split(/\s/g);
   const messagePolarity = polarity(splitMessage);
 
   // ===== Detecing polarity =====

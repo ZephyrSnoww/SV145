@@ -16,7 +16,8 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "haiku-detect": "^1.1.0",
-    "polarity": "^4.0.0"
+    "polarity": "^4.0.0",
+    "wikipedia-tldr": "^2.0.1"
   },
   "devDependencies": {
     "semistandard": "^16.0.1"
