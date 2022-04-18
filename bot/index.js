@@ -5,6 +5,8 @@ import { polarity } from 'polarity';
 import haiku from 'haiku-detect';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import { noThanksMessages, thanksMessages } from './data/randomMessages.js';
+import { randomChoice } from './helpers.js';
 
 // Register .env file
 dotenv.config();
@@ -34,7 +36,7 @@ for (const file of commandFiles) {
   });
 }
 
-// When the client is first ready
+// ========== When the client is ready ==========
 client.once('ready', () => {
   // Say so
   console.log('Ready!');
@@ -65,7 +67,7 @@ client.once('ready', () => {
   })();
 });
 
-// When the client recieves an interaction
+// ========== Command interaction handling ==========
 client.on('interactionCreate', async (interaction) => {
   // Only listen for commands
   if (!interaction.isCommand()) return;
@@ -91,29 +93,46 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
+// ========== Basic message handling ==========
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
   if (message.content === '') return;
 
-  let splitMessage = message.content.replace(/\*/, '\\*').split('\n');
-
-  if (haiku.detect(message.content)) {
-    const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*').replace(/\n/, ''));
-
-    message.reply(`*${formattedHaiku.join('\n')}*`);
-  } else {
-    for (const line of splitMessage) {
-      if (haiku.detect(line)) {
-        const formattedHaiku = haiku.format(line);
-
-        message.reply(`*${formattedHaiku.join('\n')}*`);
-      }
-    }
+  // ===== Thanks message triggers =====
+  if (thanksMessages.triggers.includes(message.content.toLowerCase())) {
+    return message.reply(randomChoice(thanksMessages.responses));
   }
 
+  if (noThanksMessages.triggers.includes(message.content.toLowerCase())) {
+    return message.reply(randomChoice(noThanksMessages.responses));
+  }
+
+  let splitMessage = message.content.replace(/\*/, '\\*').split('\n');
+
+  // ===== Detecting haikus =====
+  try {
+    if (haiku.detect(message.content)) {
+      const formattedHaiku = haiku.format(message.content.replace(/\*/, '\\*').replace(/\n/, ''));
+
+      message.reply(`*${formattedHaiku.join('\n')}*`);
+    } else {
+      for (const line of splitMessage) {
+        if (haiku.detect(line)) {
+          const formattedHaiku = haiku.format(line);
+
+          message.reply(`*${formattedHaiku.join('\n')}*`);
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  // ===== Random stuff =====
   splitMessage = message.content.split(/\s/);
   const messagePolarity = polarity(splitMessage);
 
+  // ===== Detecing polarity =====
   if (messagePolarity.polarity < -10) {
     message.reply('Wow! That message was really negative! Congrats.');
   } else if (messagePolarity.polarity > 10) {
@@ -123,9 +142,9 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-// When someone joins the server
+// ========== Member join handling ==========
 client.on('guildMemberAdd', async (member) => {
-  console.log(`${member.user.username} joined!`);
+  console.log(`${member.user.username} joined ${member.guild.name}!`);
   // await sendWelcomeImage(member);
 });
 
