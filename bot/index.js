@@ -68,6 +68,10 @@ client.once('ready', () => {
   })();
 
   // Ensure all reaction image categories exist
+  if (!fs.existsSync('./bot/data/reactionImages')) {
+    fs.mkdirSync('./bot/data/reactionImages');
+  }
+
   for (const [category, subcategories] of Object.entries(reactionImageCategories)) {
     if (!fs.existsSync(`./bot/data/reactionImages/${category}`)) {
       fs.mkdirSync(`./bot/data/reactionImages/${category}`);
