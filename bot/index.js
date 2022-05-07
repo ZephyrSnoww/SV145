@@ -147,17 +147,17 @@ client.on('messageCreate', async (message) => {
   }
 
   // ===== Random stuff =====
-  splitMessage = message.content.split(/\s/g);
-  const messagePolarity = polarity(splitMessage);
+  // splitMessage = message.content.split(/\s/g);
+  // const messagePolarity = polarity(splitMessage);
 
   // ===== Detecting polarity =====
-  if (messagePolarity.polarity < -10) {
-    message.reply('Wow! That message was really negative! Congrats.');
-  } else if (messagePolarity.polarity > 10) {
-    message.reply('Wow! That message was really positive! Congrats.');
-  } else if (messagePolarity.polarity === 0 && (messagePolarity.positivity + messagePolarity.negativity) > 20) {
-    message.reply('Wow! That message was very positive *and* negative! Make up your mind, cmon now.');
-  }
+  // if (messagePolarity.polarity < -10) {
+  //   message.reply('Wow! That message was really negative! Congrats.');
+  // } else if (messagePolarity.polarity > 10) {
+  //   message.reply('Wow! That message was really positive! Congrats.');
+  // } else if (messagePolarity.polarity === 0 && (messagePolarity.positivity + messagePolarity.negativity) > 20) {
+  //   message.reply('Wow! That message was very positive *and* negative! Make up your mind, cmon now.');
+  // }
 });
 
 // ========== Member join handling ==========
