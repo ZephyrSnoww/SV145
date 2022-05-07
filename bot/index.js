@@ -1,7 +1,7 @@
 import { Client, Intents, Collection, Permissions } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
 import { REST } from '@discordjs/rest';
-import { polarity } from 'polarity';
+// import { polarity } from 'polarity';
 import haiku from 'haiku-detect';
 import dotenv from 'dotenv';
 import fs from 'fs';
