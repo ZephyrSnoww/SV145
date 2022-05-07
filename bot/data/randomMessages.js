@@ -19,9 +19,9 @@ export const successTitles = [
 
 export const thanksMessages = {
   triggers: [
-    'thanks sylas',
-    'ty sylas',
-    'thank you sylas'
+    /\bthanks\b/,
+    /\bty\b/,
+    /\bthank you\b/
   ],
   responses: [
     'No problemo!',
@@ -36,9 +36,9 @@ export const thanksMessages = {
 
 export const noThanksMessages = {
   triggers: [
-    'shut up sylas',
-    'be quiet sylas',
-    'go away sylas'
+    /\bshut up\b/,
+    /\bbe quiet\b/,
+    /\bgo away\b/
   ],
   responses: [
     'I love you too',

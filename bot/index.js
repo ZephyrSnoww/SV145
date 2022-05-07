@@ -117,11 +117,11 @@ client.on('messageCreate', async (message) => {
   if (message.content === '') return;
 
   // ===== Thanks message triggers =====
-  if (thanksMessages.triggers.includes(message.content.toLowerCase())) {
+  if (message.content.toLowerCase().includes(thanksMessages.triggers) && message.content.toLowerCase().includes('sylas')) {
     return message.reply(randomChoice(thanksMessages.responses));
   }
 
-  if (noThanksMessages.triggers.includes(message.content.toLowerCase())) {
+  if (message.content.toLowerCase().includes(noThanksMessages.triggers) && message.content.toLowerCase().includes('sylas')) {
     return message.reply(randomChoice(noThanksMessages.responses));
   }
 
