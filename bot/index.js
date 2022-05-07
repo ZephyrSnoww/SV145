@@ -125,7 +125,7 @@ client.on('messageCreate', async (message) => {
     return message.reply(randomChoice(noThanksMessages.responses));
   }
 
-  let splitMessage = message.content.replace(/\*/g, '\\*').split('\n');
+  const splitMessage = message.content.replace(/\*/g, '\\*').split('\n');
 
   // ===== Detecting haikus =====
   try {
