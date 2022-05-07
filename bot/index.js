@@ -150,7 +150,7 @@ client.on('messageCreate', async (message) => {
   splitMessage = message.content.split(/\s/g);
   const messagePolarity = polarity(splitMessage);
 
-  // ===== Detecing polarity =====
+  // ===== Detecting polarity =====
   if (messagePolarity.polarity < -10) {
     message.reply('Wow! That message was really negative! Congrats.');
   } else if (messagePolarity.polarity > 10) {
