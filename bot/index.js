@@ -130,7 +130,7 @@ client.on('messageCreate', async (message) => {
   // ===== Detecting haikus =====
   try {
     if (haiku.detect(message.content)) {
-      const formattedHaiku = haiku.format(message.content.replace(/\*/g, '\\*').replace(/\n/g, ''));
+      const formattedHaiku = haiku.format(message.content.replace(/\*/g, '\\*').replace(/\n/g, ' '));
 
       message.reply(`*${formattedHaiku.join('\n')}*`);
     } else {
