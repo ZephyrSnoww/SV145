@@ -35,3 +35,4 @@ SV145 is a Discord bot. LOL
 
 - [ ] `/react`
 - [ ] `/mtg`
+- [X] ~~*`/get-skin`*~~
