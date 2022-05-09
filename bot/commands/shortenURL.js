@@ -31,6 +31,7 @@ export const command = {
           })
         ]
       });
+
       console.log(`${interaction.user.username} shortened a URL!`);
     }).catch((error) => {
       interaction.editReply({
