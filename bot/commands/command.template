@@ -1,5 +1,6 @@
-import { createEmbed } from '../helpers.js';
+import { createEmbed, randomChoice } from '../helpers.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { successTitles } from '../data/randomMessages.js';
 
 export const command = {
   data: new SlashCommandBuilder()
@@ -10,12 +11,13 @@ export const command = {
     interaction.reply({
       embeds: [
         createEmbed({
-          title: 'Hi!',
+          title: randomChoice(successTitles),
           description: 'You did something!',
           author: interaction.user
         })
       ]
     });
+
     console.log(`${interaction.user.username} did something!`);
   }
 };
